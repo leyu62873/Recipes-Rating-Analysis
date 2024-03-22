@@ -36,3 +36,7 @@ For the recipes database, first, I converted all the values in the dataset that 
 For EDA, first, I checked the distribution of all the features, and one interesting finding was that the avg_rating feature is heavily skewed, with an extremely large number of recipes rated 5.0, so skewed that I don't think it provides any useful information for prediction purposes anymore. The skew is so bad that I don't think it provides any useful information when doing prediction. Therefore it will not be used in the prediction. And for the other features, although they are also skewed, we can make their distribution normal by taking log.
 
 <iframe src="assets/uni_avg_rating.html" width=800 height=600 frameBorder=0></iframe>
+
+Then, for the bivariate analysis, I analyzed the relationship between "n_steps", "n_ingredients", and "calories". None of the three figures (see below for an example of the relationship between steps and ingredients) show a strong correlation. This is what we would expect, as we do not want to be influenced by multicollinearity when we make our predictions.
+
+<iframe src="assets/bi_step_ing.html" width=800 height=600 frameBorder=0></iframe>
