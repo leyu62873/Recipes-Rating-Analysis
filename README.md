@@ -18,23 +18,19 @@ First, since this study will only focus on recipes that are less than two hours 
 
 For the interacts database, I only kept the recipe id and rating because it will eventually be used to calculate the average rating of the recipes.
 
-|   recipe_id |   rating |
-|------------:|---------:|
-|       40893 |        5 |
-|       85009 |        5 |
-|       85009 |        5 |
-|      120345 |        0 |
-|      120345 |        2 |
 
 For the recipes database, first, I converted all the values in the dataset that should be lists, but are actually strings, into lists. then, I added two new columns : the number of tags and the calorie value. Finally, I removed the unneeded columns : "contributor_id", "tags", "nutrition", "steps", "description", "ingredients" (They were removed because they were partly difficult to use for data analysis and partly because I had already extracted useful information).Then I calculated the average score for each recipe and added it to the recipes dataset. Finally, I filtered out recipes that took more than two hours to make, as well as recipes with more than 1,500 calories. Finally, I split the minutes into categorical features, namely "0-59" and "60-120".
 
-| name                                 |     id |   minutes | submitted   |   n_steps |   n_ingredients |   n_tags |   calories |   avg_rating |
-|:-------------------------------------|-------:|----------:|:------------|----------:|----------------:|---------:|-----------:|-------------:|
-| 1 brownies in the world    best ever | 333281 |        40 | 2008-10-27  |        10 |               9 |       14 |      138.4 |            4 |
-| 1 in canada chocolate chip cookies   | 453467 |        45 | 2011-04-11  |        12 |              11 |        9 |      595.1 |            5 |
-| 412 broccoli casserole               | 306168 |        40 | 2008-05-30  |         6 |               9 |       10 |      194.8 |            5 |
-| millionaire pound cake               | 286009 |       120 | 2008-02-12  |         7 |               7 |       20 |      878.3 |            5 |
-| 2000 meatloaf                        | 475785 |        90 | 2012-03-06  |        17 |              13 |       10 |      267   |            5 |
+
+Finally, the cleaned dataset looks like:
+
+| name                                 |     id | submitted   |   n_steps |   n_ingredients |   n_tags |   calories |   avg_rating | minutes_cat   |
+|:-------------------------------------|-------:|:------------|----------:|----------------:|---------:|-----------:|-------------:|:--------------|
+| 1 brownies in the world    best ever | 333281 | 2008-10-27  |        10 |               9 |       14 |      138.4 |            4 | 0-59          |
+| 1 in canada chocolate chip cookies   | 453467 | 2011-04-11  |        12 |              11 |        9 |      595.1 |            5 | 0-59          |
+| 412 broccoli casserole               | 306168 | 2008-05-30  |         6 |               9 |       10 |      194.8 |            5 | 0-59          |
+| millionaire pound cake               | 286009 | 2008-02-12  |         7 |               7 |       20 |      878.3 |            5 | 60-120        |
+| 2000 meatloaf                        | 475785 | 2012-03-06  |        17 |              13 |       10 |      267   |            5 | 60-120        |
 
 ### EDA
 
