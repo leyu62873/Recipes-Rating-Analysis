@@ -1,5 +1,6 @@
 # Recipes-Rating-Analysis
 a project for DSC 80 at UCSD Analyzing a database of recipes and their evaluations
+
 by: Jiawe Lyu
 
 ## Introduction
@@ -41,6 +42,10 @@ For EDA, first, I checked the distribution of all the features, and one interest
 
 <iframe src="assets/uni_avg_rating.html" width=800 height=600 frameBorder=0></iframe>
 
+Also important is the distribution of minutes_cat (minute catgories), which we can see is unbalanced. This will affect the choice of metric when we do the prediction later.
+
+<iframe src="assets/uni_min_cat.html" width=800 height=600 frameBorder=0></iframe>
+
 Then, for the bivariate analysis, I analyzed the relationship between "n_steps", "n_ingredients", and "calories". None of the three figures (see below for an example of the relationship between steps and ingredients) show a strong correlation. This is what we would expect, as we do not want to be influenced by multicollinearity when we make our predictions.
 
 <iframe src="assets/bi_step_ing.html" width=800 height=600 frameBorder=0></iframe>
@@ -55,7 +60,17 @@ Finally I did aggregation on feature "tags" and calculated its max, mean, and me
 
 (For this part, I will use the unfiltered dataset). We can see that this dataset has two features containing NA values. One is Name and the other is avg_rating. I think that for Name, the NA value generated is most likely **NMAR**, probably because: some of the text is from a foreign language and can't be decoded with the current decoder. To prevent the program from crashing, the names are changed to NaN.
 
-table
+| index         |           0 |
+|:--------------|------------:|
+| name          | 1.19357e-05 |
+| id            | 0           |
+| minutes       | 0           |
+| submitted     | 0           |
+| n_steps       | 0           |
+| n_ingredients | 0           |
+| n_tags        | 0           |
+| calories      | 0           |
+| avg_rating    | 0.0311403   |
 
 ### Missingness Dependency
 
@@ -63,17 +78,51 @@ And for avg_rating, I think it's likely to be MAR because a late submitted recip
 
 <iframe src="assets/mis_id_rate.html" width=800 height=600 frameBorder=0></iframe>
 
-I then performed a permutation test to randomly permute the ids of the recipes and obtained the distribution of the K-S Statistic. as can be seen, the p_value of the values that we observe for the K-S Statistic is essentially 0.
+I then performed a permutation test to randomly permute the ids of the recipes and obtained the distribution of the K-S Statistic. as can be seen, the p_value of the values that we observe for the K-S Statistic is essentially 0. Therfore, the conclusion is I reject the null hypothesis, and it's likely that the empty value in avg_rating is **MAR**
 
 <iframe src="assets/fig_ks_id.html" width=800 height=600 frameBorder=0></iframe>
 
 ## Hypothesis Testing
 
-Now, I'm going to perform a Hypothesis test. The Null hypothesis is: Recipes that take less time (<1 h) and those that take more time (>= 1 h) have the same steps. Alternative hypothesis is: Recipes that take less time (<1 h) have higher steps than those that take longer (>= 1 h). I will perform permutation test. test statistic is difference in mean of n_steps. significance level is 0.05.
+Now, I'm going to perform a Hypothesis test. 
+
+The Null hypothesis is: Recipes that take less time (<1 h) and those that take more time (>= 1 h) have the same steps. 
+Alternative hypothesis is: Recipes that take less time (<1 h) have higher steps than those that take longer (>= 1 h). 
+
+I will perform permutation test. test statistic is difference in mean of n_steps. significance level is 0.05.
 
 <iframe src="assets/fig_step4.html" width=800 height=600 frameBorder=0></iframe>
 
-As can be seen, it is almost impossible to see this distribution simply because of randomness. p-value is almost 0. The significance of understanding this is that we can assume that the feature n_steps can be of great help when doing prediction. This is because it has a strong correlation with the time spent on the recipe.
+As can be seen, it is almost impossible to see this distribution simply because of randomness. p-value is almost 0. The conclusion is I reject the null hypothesis, and it's likely that recipes that take less time (<1 h) have higher steps than those that take longer (>= 1 h). The significance of understanding this is that we can assume that the feature n_steps can be of great help when doing prediction. This is because it has a strong correlation with the time spent on the recipe.
 
 ## Framing a Prediction Problem
+
+Now, we can get back to our most important question: does it take less than an hour to predict a recipe. This is a binary classification question, and the response variable I'm using is "minutes_cat" (minutes categories). This is the time category we want to predict. The metric I am using is F-1 score, since the categories are unbalanced, and we don't need to focus specifically on either side of recall or precision (making mistakes doesn't have serious consequences). What we know so far is that: "n_ingredients", "calories" and "n_steps" are independent of each other (as we mentioned in the bivariate analysis). So I would consider using them." The "n_tags" is a feature that I would not use because it has almost the same distribution across time categories (see aggregation in the EDA section).
+
+## Baseline Model
+
+The classifier I am using is a decision tree classifier. The features used so far are "n_ingredients" and "calories". They are quantitative features and since their distributions are skewed (see EDA part), I have performed a log transformation on them and I have not adjusted any hyperparameters.
+
+The result is that the F-1score for the training set reached 0.97, but the F-1 score for the test set was only 0.86.Obviously, this mod has been overfitting. Therefore, I think this mod is not good.
+
+## Final Model
+
+The features I added are "n_steps" and "id". The reasons are: 1. "n_steps" is distributed independently of "n_ingredients" and "calories", so I would expect it to provide more information. 2. id provides the time difference between recipes, an information that the other three features don't provide.
+
+The mod I'm using is still Decision Tree Classifier. the reason is that even though it was overfitting before, it still has a good test F-1 score. Therefore, I think this model can reduce the effect of overfitting by adjusting the hyperparameters. By using GridSearchCV and providing different "min_samples_split" (5~35), "max_depth" (None~18), and different criterion (gini/entropy), I got the best hyperparameters: {'criterion': 'gini', 'max_depth': 4, 'min_samples_split': 5}.
+
+Compared to before, the F-1 score for this mod in the training set is around 0.913, while the F-1 score for the test set is around 0.911. It is better than the previous mod in that it not only has a higher test F-1 score, but also has no overfitting.
+
+## Step 8: Fairness Analysis
+
+Finally, I will perform a fairness analysis on the produced model. The groupings I chose were: recipes with smaller id and recipes with larger id (split into two groups based on median value). evaluation metric is still F-1 score.
+
+The Null hypothesis is: My model is fair. Its F-1 score for recipes with smaller id and recipes with larger id are roughly the same, and any differences are due to random chance. 
+Alternative hypothesis is: My model is unfair. Its F-1 score for recipes with smaller id is lower than its precision for recipes with larger id. 
+
+The test statistic is the difference in F-1 score between recipes with smaller id and recipes with larger id
+
+<iframe src="assets/fig_fair.html" width=800 height=600 frameBorder=0></iframe>
+
+As you can see from the images, it is almost impossible for us to see this difference due to randomness. The p_value is 0.006 So my conclusion is that I rejected the null hypothesis and it is possible that my mod is unfair.
 
