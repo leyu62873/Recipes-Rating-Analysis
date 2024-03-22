@@ -127,4 +127,3 @@ The test statistic is the difference in F-1 score between recipes with smaller i
 <iframe src="assets/fig_fair.html" width=800 height=600 frameBorder=0></iframe>
 
 As you can see from the images, it is almost impossible for us to see this difference due to randomness. The p_value is 0.006 So my conclusion is that I rejected the null hypothesis and it is possible that my mod is unfair.
-
