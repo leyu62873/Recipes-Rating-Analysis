@@ -23,7 +23,7 @@ For the interacts database, I only kept the recipe id and rating because it will
 |      120345 |        0 |
 |      120345 |        2 |
 
-For the recipes database, first, I converted all the values in the dataset that should be lists, but are actually strings, into lists. then, I added two new columns : the number of tags and the calorie value. Finally, I removed the unneeded columns : "contributor_id", "tags", "nutrition", "steps", "description", "ingredients" (They were removed because they were partly difficult to use for data analysis and partly because I had already extracted useful information).Then I calculated the average score for each recipe and added it to the recipes dataset. Finally, I filtered out recipes that took more than two hours to make, as well as recipes with more than 1,500 calories.
+For the recipes database, first, I converted all the values in the dataset that should be lists, but are actually strings, into lists. then, I added two new columns : the number of tags and the calorie value. Finally, I removed the unneeded columns : "contributor_id", "tags", "nutrition", "steps", "description", "ingredients" (They were removed because they were partly difficult to use for data analysis and partly because I had already extracted useful information).Then I calculated the average score for each recipe and added it to the recipes dataset. Finally, I filtered out recipes that took more than two hours to make, as well as recipes with more than 1,500 calories. Finally, I split the minutes into categorical features, namely "0-59" and "60-120".
 
 | name                                 |     id |   minutes | submitted   |   n_steps |   n_ingredients |   n_tags |   calories |   avg_rating |
 |:-------------------------------------|-------:|----------:|:------------|----------:|----------------:|---------:|-----------:|-------------:|
@@ -40,3 +40,4 @@ For EDA, first, I checked the distribution of all the features, and one interest
 Then, for the bivariate analysis, I analyzed the relationship between "n_steps", "n_ingredients", and "calories". None of the three figures (see below for an example of the relationship between steps and ingredients) show a strong correlation. This is what we would expect, as we do not want to be influenced by multicollinearity when we make our predictions.
 
 <iframe src="assets/bi_step_ing.html" width=800 height=600 frameBorder=0></iframe>
+
