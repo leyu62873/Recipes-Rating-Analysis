@@ -58,19 +58,25 @@ Finally I did aggregation on feature "tags" and calculated its max, mean, and me
 
 ### NMAR Analysis
 
-(For this part, I will use the unfiltered dataset). We can see that this dataset has two features containing NA values. One is Name and the other is avg_rating. I think that for Name, the NA value generated is most likely **NMAR**, probably because: some of the text is from a foreign language and can't be decoded with the current decoder. To prevent the program from crashing, the names are changed to NaN.
+(For this part only, I will use the unfiltered dataset, and I didn't drop any columns)
 
-| index         |           0 |
-|:--------------|------------:|
-| name          | 1.19357e-05 |
-| id            | 0           |
-| minutes       | 0           |
-| submitted     | 0           |
-| n_steps       | 0           |
-| n_ingredients | 0           |
-| n_tags        | 0           |
-| calories      | 0           |
-| avg_rating    | 0.0311403   |
+. We can see that this dataset has 3 features containing NA values. Name, Description, and Avg_rating. I think that for Name, the NA value generated is most likely **NMAR**, probably because: some of the text is from a foreign language and can't be decoded with the current decoder. To prevent the program from crashing, the names are changed to NaN. I might be able to explain missingness a little better if I could know that all these recipes were uploaded by people in those countries.
+
+| index          |           0 |
+|:---------------|------------:|
+| name           | 1.19357e-05 |
+| id             | 0           |
+| minutes        | 0           |
+| contributor_id | 0           |
+| submitted      | 0           |
+| tags           | 0           |
+| nutrition      | 0           |
+| n_steps        | 0           |
+| steps          | 0           |
+| description    | 0.000835502 |
+| ingredients    | 0           |
+| n_ingredients  | 0           |
+| avg_rating     | 0.0311403   |
 
 ### Missingness Dependency
 
