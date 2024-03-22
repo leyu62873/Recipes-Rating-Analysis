@@ -7,7 +7,7 @@ by: Jiawe Lyu
 
 As the number of recipes grows, so does the difficulty of choosing the right one. Especially nowadays, when people are busy and have high obesity rates, they need recipes that are quick and not too high in calories. In this study, I will focus on recipes that can be made in less than two hours with not too high calories and predict if the recipe will take less than one hour based on the information in the recipe.
 
-The dataset is from food.com which contains recipes and reviews. The recipe dataset has important inforamtion like id, number of steps, minutes, tags, and nutrition. It has 83782 rows. The ratings dataset has inforamtion like user ID, recipe ID, and rating and it has 731927 rows.
+The dataset is from food.com which contains recipes and reviews. The recipe dataset has important inforamtion realated to our question like id (Recipe ID), n_steps(number of steps), minutes(Minutes to prepare recipe), tags(Food.com tags for recipe), and nutrition(Nutrition information). It has 83782 rows. The ratings dataset has inforamtion realated to our question like recipe ID, and rating and it has 731927 rows.
 
 
 ## Data Cleaning and EDA
@@ -34,11 +34,11 @@ Finally, the cleaned dataset looks like:
 
 ### EDA
 
-For EDA, first, I checked the distribution of all the features, and one interesting finding was that the avg_rating feature is heavily skewed, with an extremely large number of recipes rated 5.0, so skewed that I don't think it provides any useful information for prediction purposes anymore. The skew is so bad that I don't think it provides any useful information when doing prediction. Therefore it will not be used in the prediction. And for the other features, although they are also skewed, we can make their distribution normal by taking log.
+For EDA, first, I checked the distribution of all the features, and one interesting finding was that the avg_rating feature is heavily skewed (see figure below), with an extremely large number of recipes rated 5.0, so skewed that I don't think it provides any useful information for prediction purposes anymore. The skew is so bad that I don't think it provides any useful information when doing prediction. Therefore it will not be used in the prediction. And for the other features, although they are also skewed, we can make their distribution normal by taking log.
 
 <iframe src="assets/uni_avg_rating.html" width=800 height=600 frameBorder=0></iframe>
 
-Also important is the distribution of minutes_cat (minute catgories), which we can see is unbalanced. This will affect the choice of metric when we do the prediction later.
+Also important is the distribution of minutes_cat (minute catgories), which we can see is unbalanced. (see figure below) This will affect the choice of metric when we do the prediction later.
 
 <iframe src="assets/uni_min_cat.html" width=800 height=600 frameBorder=0></iframe>
 
@@ -46,7 +46,7 @@ Then, for the bivariate analysis, I analyzed the relationship between "n_steps",
 
 <iframe src="assets/bi_step_ing.html" width=800 height=600 frameBorder=0></iframe>
 
-Finally I did aggregation on feature "tags" and calculated its max, mean, and median for different time classifications, and found it to be almost identical respectively. This likely indicates that it provides little meaningful information for prediction.
+Finally I did aggregation on feature "tags" and calculated its max, mean, and median for different time classifications, and found it to be almost identical respectively. (see figure below) This likely indicates that it provides no meaningful information for prediction.
 
 <iframe src="assets/agg_tag_min.html" width=800 height=600 frameBorder=0></iframe>
 
@@ -99,7 +99,7 @@ As can be seen, it is almost impossible to see this distribution simply because 
 
 ## Framing a Prediction Problem
 
-Now, we can get back to our most important question: does it take less than an hour to predict a recipe. This is a binary classification question, and the response variable I'm using is "minutes_cat" (minutes categories). This is the time category we want to predict. The metric I am using is F-1 score, since the categories are unbalanced, and we don't need to focus specifically on either side of recall or precision (making mistakes doesn't have serious consequences). What we know so far is that: "n_ingredients", "calories" and "n_steps" are independent of each other (as we mentioned in the bivariate analysis). So I would consider using them." The "n_tags" is a feature that I would not use because it has almost the same distribution across time categories (see aggregation in the EDA section).
+Now, we can get back to our most important question: does it take less than an hour to predict a recipe. This is a binary classification question(less than 1 hour or not), and the response variable I'm using is "minutes_cat" (minutes categories). This is the time category we want to predict. The metric I am using is F-1 score, since the categories are unbalanced, and we don't need to focus specifically on either side of recall or precision (making mistakes doesn't have serious consequences). What we know so far is that: "n_ingredients", "calories" and "n_steps" are independent of each other (as we mentioned in the bivariate analysis). So I would consider using them." The "n_tags" is a feature that I would not use because it has almost the same distribution across time categories (see aggregation in the EDA section).
 
 ## Baseline Model
 
