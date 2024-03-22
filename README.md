@@ -78,7 +78,7 @@ Finally I did aggregation on feature "tags" and calculated its max, mean, and me
 
 And for avg_rating, I think it's likely to be MAR because a late submitted recipes will get fewer reviews and ratings compared to early submitted recipes, and therefore more likely to get NA value. We split the database into two parts, one where "avg_rating" is missing and the other where it is not, and we can see that the distribution of ids is not similar. We can see that for recipes where avg_rating is not NA, they have more ids that are small (i.e. submitted early).
 
-<iframe src="assets/mis_id_rate.html" width=800 height=600 frameBorder=0></iframe>
+<iframe src="assets/mis_id_rate33.html" width=800 height=600 frameBorder=0></iframe>
 
 I then performed a permutation test to randomly permute the ids of the recipes and obtained the distribution of the K-S Statistic. as can be seen, the p_value of the values that we observe for the K-S Statistic is essentially 0. Therfore, the conclusion is I reject the null hypothesis, and it's likely that the empty value in avg_rating is **MAR**
 
