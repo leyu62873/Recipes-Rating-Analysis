@@ -109,9 +109,9 @@ The result is that the F-1score for the training set reached 0.97, but the F-1 s
 
 ## Final Model
 
-The features I added are "n_steps" and "id". The reasons are: 1. "n_steps" is distributed independently of "n_ingredients" and "calories", so I would expect it to provide more information. 2. id provides the time difference between recipes, an information that the other three features don't provide.
+The features I added are "n_steps" and "id". The reasons are: 1. "n_steps" is distributed independently of "n_ingredients" and "calories", so I would expect it to provide more information. 2. id provides the time difference between recipes, an information that the other three features don't provide. I also apply the log transformation on them.
 
-The mod I'm using is still Decision Tree Classifier. the reason is that even though it was overfitting before, it still has a good test F-1 score. Therefore, I think this model can reduce the effect of overfitting by adjusting the hyperparameters. By using GridSearchCV and providing different "min_samples_split" (5~35), "max_depth" (None~18), and different criterion (gini/entropy), I got the best hyperparameters: {'criterion': 'gini', 'max_depth': 4, 'min_samples_split': 5}.
+The model I'm using is still Decision Tree Classifier. the reason is that even though it was overfitting before, it still has a good test F-1 score. Therefore, I think this model can reduce the effect of overfitting by adjusting the hyperparameters. By using GridSearchCV and providing different "min_samples_split" (5~35), "max_depth" (None~18), and different criterion (gini/entropy), I got the best hyperparameters: {'criterion': 'gini', 'max_depth': 4, 'min_samples_split': 5}.
 
 Compared to before, the F-1 score for this mod in the training set is around 0.913, while the F-1 score for the test set is around 0.911. It is better than the previous mod in that it not only has a higher test F-1 score, but also has no overfitting.
 
