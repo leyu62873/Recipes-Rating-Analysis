@@ -41,3 +41,6 @@ Then, for the bivariate analysis, I analyzed the relationship between "n_steps",
 
 <iframe src="assets/bi_step_ing.html" width=800 height=600 frameBorder=0></iframe>
 
+Finally I did aggregation on feature "tags" and calculated its max, mean, and median for different time classifications, and found it to be almost identical respectively. This likely indicates that it provides little meaningful information for prediction.
+
+<iframe src="assets/agg_tag_min.html" width=800 height=600 frameBorder=0></iframe>
