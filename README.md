@@ -1,7 +1,7 @@
 # Recipes-Rating-Analysis
 a project for DSC 80 at UCSD Analyzing a database of recipes and their evaluations
 
-by: Jiawe Lyu
+by: Jiawei Lyu
 
 ## Introduction
 
